@@ -11,16 +11,18 @@ st.title('😷 Real-Time Face Mask Detection')
 st.markdown('Upload an image to detect if people are wearing masks correctly.')
 
 # Load Model
+import gdown
+
 @st.cache_resource
 def load_model():
-    drive_path = '/content/drive/MyDrive/Mask_Detection_Export/best.onnx'
-    local_path = 'best.onnx'
-    
-    model_to_use = drive_path if os.path.exists(drive_path) else local_path
-    
-    if not os.path.exists(model_to_use):
-        return None, model_to_use
-    return ort.InferenceSession(model_to_use), model_to_use
+    file_id = "1QaF0_TookWgPzMwd__TTJ6dV_Q4VKJMo"  
+    url = f"https://drive.google.com/uc?id=1QaF0_TookWgPzMwd__TTJ6dV_Q4VKJMo"
+    output = "best.onnx"
+
+    if not os.path.exists(output):
+        gdown.download(url, output, quiet=False)
+
+    return ort.InferenceSession(output), output
 
 session, path_used = load_model()
 
